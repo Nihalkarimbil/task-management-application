@@ -5,7 +5,7 @@ export interface ITask extends Document {
   description: string;
   dueDate: Date;
   assignee: mongoose.Types.ObjectId;
-  status: Enumerator;
+  status: string;
   section: mongoose.Types.ObjectId;
   isDeleted: boolean;
 }
@@ -16,6 +16,7 @@ const TaskSchema: Schema = new Schema(
     description: { type: String },
     dueDate: { type: Date, required: true },
     assignee: { type: String },
+    status:{type:String},
     section: { type: Schema.Types.ObjectId, ref: "Section", required: true },
     isDeleted: { type: Boolean, default: false },
   },

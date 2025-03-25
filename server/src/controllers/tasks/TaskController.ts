@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Task from "../../models/Task";
 import CustomError from "../../utils/CustomError";
+import Section from "../../models/Section";
 
 
 export const createTask = async (
@@ -8,13 +9,14 @@ export const createTask = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { title, description, dueDate, assignee, section } = req.body;
+    const {status, title, description, dueDate, assignee, section } = req.body;
     const newTask = new Task({
         title,
         description,
         dueDate,
         assignee,
         section,
+        status
     });
 
     if (!newTask) {
@@ -83,6 +85,7 @@ export const moveTask = async (req: Request, res: Response ,next :NextFunction) 
     if (!task){
         return next(new CustomError("no task Found",404))
     } 
+    
     res.status(200).json({
         data:task,
         message:"task moved succesfully",
