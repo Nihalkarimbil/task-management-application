@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from "react";
 import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
@@ -7,9 +7,10 @@ import { BiSearch } from "react-icons/bi";
 import { FiExternalLink } from "react-icons/fi";
 import { CiSettings } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa6";
-import { FaApple} from "react-icons/fa";
+import { FaApple } from "react-icons/fa";
 import { useSections } from "@/hooks/useSection";
 import { useTask } from "@/hooks/useTask";
+import SectionPopup from "@/ui/sectionModal";
 
 export type Task = {
     _id: string;
@@ -21,13 +22,14 @@ export type Task = {
 const KanbanBoard = () => {
     const { sections, isLoading }: { sections: { _id: string; name: string }[]; isLoading: boolean } = useSections();
     const { Tasks = [], Loading } = useTask();
-
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [isPopupOpen, setIsPopupOpen] = useState(false); // Popup state
 
-    
     useEffect(() => {
         setTasks(Tasks);
     }, [Tasks]);
+
+
 
     const onDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
@@ -46,7 +48,6 @@ const KanbanBoard = () => {
 
     return (
         <>
-            
             <div className="flex items-center justify-between p-4 bg-white mx-8">
                 <div className="flex items-center space-x-4">
                     <button className="w-10 h-10 border-2 border-gray-200 text-gray-400 rounded-lg flex items-center justify-center mr-3">
@@ -85,9 +86,7 @@ const KanbanBoard = () => {
             </div>
 
             <DndContext onDragEnd={onDragEnd} collisionDetection={closestCorners}>
-
-                <div className="grid grid-cols-4 gap-4 p-4">
-                    
+                <div className="flex gap-4 p-4 overflow-x-scroll">
                     {sections && sections.length > 0 ? (
                         sections.map((section) => (
                             <Column key={section._id} id={section.name} tasks={tasks.filter(task => task.status === section.name)} />
@@ -95,9 +94,16 @@ const KanbanBoard = () => {
                     ) : (
                         <div className="col-span-4 text-center text-gray-500">No sections available</div>
                     )}
-                    <h1 className="pt-4 font-semibold text-lg text-gray-500 "> + add section</h1>
+                   
+                    <button
+                        className="pb-[650px] font-semibold text-sm text-gray-500 cursor-pointer hover:text-gray-700"
+                        onClick={() => setIsPopupOpen(true)}
+                    >
+                        +AddSection
+                    </button>
                 </div>
             </DndContext>
+            {isPopupOpen && <SectionPopup onClose={() => setIsPopupOpen(false)} />}
         </>
     );
 };

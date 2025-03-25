@@ -6,7 +6,7 @@ export const getSections = async () => {
     return data.data;
 };
 
-export const createSection = async (name: string) => {
-    const { data } = await axiosInstance.post("/section", { name });
-    return data;
+export const createSection = async ({ name }: { name: string }) => {
+    const response = await axiosInstance.post("/section/add", { name });
+    return response.data;
 };

@@ -1,13 +1,18 @@
-import { useQuery} from "@tanstack/react-query";
-import { getSections } from "../../src/services/sectionServices";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { createSection, getSections } from "../../src/services/sectionServices";
 
 export const useSections = () => {
-   
-    const { data: sections, isLoading } = useQuery({ queryKey: ["sections"], queryFn: getSections });
-
-    // const addSectionMutation = useMutation(createSection, {
-    //     onSuccess: () => queryClient.invalidateQueries(["sections"]),
-    // });
-
-    return { sections, isLoading };
+    
+    const queryClient = new QueryClient();
+    const { data: sections, isLoading ,refetch:fetchOn} = useQuery({
+        queryKey: ["sections"],
+        queryFn: getSections,
+    });
+    const addSectionMutation = useMutation({
+        mutationFn: createSection,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["sections"] }); // Refresh sections after adding
+        },
+    });
+    return { sections, isLoading ,addSectionMutation,fetchOn};
 };
