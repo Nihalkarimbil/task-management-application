@@ -7,25 +7,48 @@ import { FaPlus } from "react-icons/fa";
 import { Task } from "./Kanbanboard";
 import { useState } from "react";
 
-import TaskModal from "@/ui/taskModal";
+import TaskModal from "@/ui/taskCreateModal";
 
-const Column = ({ id, tasks }: { id: string; tasks: Task[] }) => {
-  console.log(tasks);
-  console.log(id);
+const Column = ({
+  id,
+  tasks,
+  onDeleteColumn,
+}: {
+  id: string;
+  tasks: Task[];
+  onDeleteColumn: (id: string) => void;
+}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { setNodeRef } = useDroppable({ id });
 
   return (
-    <div ref={setNodeRef} className="p-4 rounded h-screen w-80">
+    <div ref={setNodeRef} className="p-4 rounded h-screen w-80 relative">
       <div className="flex justify-between">
         <h2 className="font-semibold text-lg">{id}</h2>
-        <div className="flex gap-3 cursor-pointer">
+        <div className="flex gap-3 cursor-pointer relative">
           <button onClick={() => setIsPopupOpen(true)} className="mb-4">
-            <FaPlus size={16}/>
+            <FaPlus size={16} />
           </button>
 
-          <HiOutlineDotsHorizontal />
+          <HiOutlineDotsHorizontal
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="relative"
+          />
+
+          {isMenuOpen && (
+            <div className="absolute top-6 right-0 bg-white shadow-md rounded-md py-2 w-32 z-10">
+              <button
+                onClick={() => {
+                  onDeleteColumn(id);
+                  setIsMenuOpen(false);
+                }}
+                className="w-full px-4 py-2 text-sm text-left hover:bg-red-500 hover:text-white"
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -33,11 +56,22 @@ const Column = ({ id, tasks }: { id: string; tasks: Task[] }) => {
         {tasks
           .filter((task) => task.status == id)
           .map((task) => (
-            <TaskCard key={task._id} task={task} />
+            <TaskCard
+              key={task._id}
+              task={task}
+              onDelete={(id: string) =>
+                console.log(`Delete task with id: ${id}`)
+              }
+            />
           ))}
-          <h1 className="text-center font-semibold text-gray-600 mt-2 cursor-pointer"  onClick={() => setIsPopupOpen(true)}>+add Task</h1>
-          
+        <h1
+          className="text-center font-semibold text-gray-600 mt-2 cursor-pointer"
+          onClick={() => setIsPopupOpen(true)}
+        >
+          + Add Task
+        </h1>
       </div>
+
       {isPopupOpen && <TaskModal onClose={() => setIsPopupOpen(false)} />}
     </div>
   );

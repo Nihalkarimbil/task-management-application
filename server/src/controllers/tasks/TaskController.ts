@@ -46,21 +46,6 @@ export const getTask = async (
     });
 };
 
-export const editTask = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedTask) {
-        return next(new CustomError("error on updating task"))
-    }
-    res.status(200).json({
-        message: "Task edited Succesfully",
-        data: updatedTask,
-        error: false
-    });
-}
 
 export const deleteTask = async (
     req: Request,
@@ -80,7 +65,7 @@ export const deleteTask = async (
 
 export const moveTask = async (req: Request, res: Response ,next :NextFunction) => {
     const { taskId, newSection } = req.body;
-    const task = await Task.findByIdAndUpdate(taskId, { section: newSection }, { new: true });
+    const task = await Task.findByIdAndUpdate(taskId, { status: newSection }, { new: true });
     if (!task){
         return next(new CustomError("no task Found",404))
     } 

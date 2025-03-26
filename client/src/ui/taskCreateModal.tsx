@@ -37,7 +37,7 @@ const dummyUsers: User[] = [
 ];
 
 const TaskModal = ({ onClose }: { onClose: () => void }) => {
-    const {addTaskMutation}=useTask()
+    const {addTaskMutation,refetch}=useTask()
     const [task, setTask] = useState<Task>({
         title: "",
         description: "",
@@ -58,10 +58,17 @@ const TaskModal = ({ onClose }: { onClose: () => void }) => {
     };
 
     const handleSubmit = async() => {
-        console.log("Task Added:", task);
-        await addTaskMutation.mutateAsync(task)
-        setTask({ title: "", description: "", dueDate: "", status: "", assignee: null });
-        onClose();
+        try{
+            console.log("Task Added:", task);
+            await addTaskMutation.mutateAsync(task)
+            setTask({ title: "", description: "", dueDate: "", status: "", assignee: null });
+            onClose();
+            refetch()
+        }catch(error){
+            console.log(error);
+            
+        }
+        
     };
 
     return (

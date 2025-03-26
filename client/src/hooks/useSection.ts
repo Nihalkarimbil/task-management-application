@@ -1,18 +1,38 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { createSection, getSections } from "../../src/services/sectionServices";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import {
+    createSection,
+    deleteSection,
+    getSections,
+} from "../../src/services/sectionServices";
 
+//React Query Hooks for managing sections
 export const useSections = () => {
-    
-    const queryClient = new QueryClient();
-    const { data: sections, isLoading ,refetch:fetchOn} = useQuery({
+    const queryClient = useQueryClient(); 
+
+    const { data: sections, isLoading, refetch: fetchOn } = useQuery({
         queryKey: ["sections"],
         queryFn: getSections,
     });
+
     const addSectionMutation = useMutation({
         mutationFn: createSection,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["sections"] }); // Refresh sections after adding
+            queryClient.invalidateQueries({ queryKey: ["sections"] });
         },
     });
-    return { sections, isLoading ,addSectionMutation,fetchOn};
+
+    const dltSectionMutation = useMutation({
+        mutationFn: deleteSection,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["sections"] });
+        },
+    });
+
+    return {
+        sections,
+        isLoading,
+        addSectionMutation,
+        fetchOn,
+        dltSectionMutation,
+    };
 };
