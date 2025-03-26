@@ -5,6 +5,7 @@ import { addSection, deleteSection, getSection } from "../controllers/sections/S
 const sectionRoute= express.Router()
 
 sectionRoute
+
     .post("/add",tryCatch(addSection))
     .get("/get",tryCatch(getSection))
     .put("/delete/:id",tryCatch(deleteSection))

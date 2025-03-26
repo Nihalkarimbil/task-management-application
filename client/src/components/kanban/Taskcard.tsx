@@ -39,7 +39,7 @@ const TaskCard = ({ task, onDelete }: { task: Task; onDelete: (id: string) => vo
                 {...listeners}
                 className="relative p-2 mt-2 bg-white rounded shadow cursor-pointer"
                 onClick={() => {
-                    console.log("Opening modal..."); // Debugging
+                    console.log("Opening modal..."); 
                     setIsModalOpen(true);
                 }}
             >
@@ -48,7 +48,7 @@ const TaskCard = ({ task, onDelete }: { task: Task; onDelete: (id: string) => vo
                     <div className="relative" ref={dropdownRef}>
                         <button
                             onClick={(e) => {
-                                e.stopPropagation(); // Prevents modal from opening when clicking menu
+                                e.stopPropagation(); 
                                 setDropdownOpen((prev) => !prev);
                             }}
                             className="p-1 rounded hover:bg-gray-200 focus:outline-none"
@@ -93,7 +93,7 @@ const TaskCard = ({ task, onDelete }: { task: Task; onDelete: (id: string) => vo
                 <TaskModal
                     isOpen={isModalOpen}
                     onClose={() => {
-                        console.log("Closing modal..."); // Debugging
+                        console.log("Closing modal..."); 
                         setIsModalOpen(false);
                     }}
                     task={task}

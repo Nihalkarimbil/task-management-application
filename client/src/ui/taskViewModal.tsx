@@ -16,7 +16,7 @@ interface TaskModalProps {
 
 const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, task }) => {
     if (!isOpen) return null;
-    console.log("nnnnnnnnnnnnnnn",task);
+
     
 
     return (
