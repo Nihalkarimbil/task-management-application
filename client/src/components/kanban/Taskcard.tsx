@@ -3,6 +3,7 @@
 import { useDraggable } from "@dnd-kit/core";
 import { Task } from "./Kanbanboard";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import Image from "next/image";
 
 const TaskCard = ({ task }: { task: Task }) => {
     const { attributes, listeners, setNodeRef } = useDraggable({ id: task._id });
@@ -24,8 +25,12 @@ const TaskCard = ({ task }: { task: Task }) => {
                 <p className="font-semibold">{task.title}</p>
                 <HiOutlineDotsHorizontal />
             </div>
-
+            
+            <div className="flex justify-between mt-5">
+            <Image src={task.assignee.profileImage} alt="s" width={200} height={200} className="rounded-full w-6 h-6"/>
             <p className="text-sm text-gray-500">{formattedDate}</p>
+            </div>
+           
         </div>
     );
 };

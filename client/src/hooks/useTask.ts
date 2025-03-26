@@ -1,7 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTask } from "@/services/taskService";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { addTask, getTask } from "@/services/taskService";
 
-export const useTask=()=>{
+export const useTask = () => {
+    const queryClient = new QueryClient();
     const { data: Tasks, isLoading: Loading } = useQuery({ queryKey: ["Tasks"], queryFn: getTask });
-    return {Tasks,Loading}
+    const addTaskMutation = useMutation({
+        mutationFn: addTask,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["Tasks"] });
+        },
+    });
+    return { Tasks, Loading, addTaskMutation }
 }

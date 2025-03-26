@@ -12,11 +12,17 @@ import { useSections } from "@/hooks/useSection";
 import { useTask } from "@/hooks/useTask";
 import SectionPopup from "@/ui/sectionModal";
 
+export interface Assignee {
+    profileImage: string;
+}
+
 export type Task = {
     _id: string;
     title: string;
     status: string;
     dueDate: string;
+    description: string;
+    assignee:Assignee
 };
 
 const KanbanBoard = () => {

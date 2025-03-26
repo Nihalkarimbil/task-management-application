@@ -9,13 +9,12 @@ export const createTask = async (
     res: Response,
     next: NextFunction
 ) => {
-    const {status, title, description, dueDate, assignee, section } = req.body;
+    const {status, title, description, dueDate, assignee } = req.body;
     const newTask = new Task({
         title,
         description,
         dueDate,
         assignee,
-        section,
         status
     });
 
